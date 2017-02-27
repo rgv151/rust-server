@@ -3,10 +3,10 @@ FROM ubuntu:16.04
 MAINTAINER didstopia
 
 # Setup the locales
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8 
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 # Fixes apt-get warnings
 ENV DEBIAN_FRONTEND noninteractive
@@ -24,27 +24,12 @@ RUN apt-get install -y \
     curl \
     wget \
     bsdtar \
-    nginx \
     build-essential \
     expect \
     libgdiplus
 
 # Run as root
 USER root
-
-# Remove default nginx stuff
-RUN rm -fr /usr/share/nginx/html/* && \
-	rm -fr /etc/nginx/sites-available/* && \
-	rm -fr /etc/nginx/sites-enabled/*
-
-# Install webrcon (specific commit)
-COPY nginx_rcon.conf /etc/nginx/nginx.conf
-RUN curl -sL https://github.com/Facepunch/webrcon/archive/aefbb0d7b58570ec3340bdec0d31db73b8b6b0ab.zip | bsdtar -xvf- -C /tmp && \
-	mv /tmp/webrcon-aefbb0d7b58570ec3340bdec0d31db73b8b6b0ab/* /usr/share/nginx/html/ && \
-	rm -fr /tmp/webrcon-aefbb0d7b58570ec3340bdec0d31db73b8b6b0ab
-
-# Customize the webrcon package to fit our needs
-ADD fix_conn.sh /tmp/fix_conn.sh
 
 # Create and set the steamcmd folder as a volume
 RUN mkdir -p /steamcmd/rust
@@ -88,7 +73,6 @@ ADD update_check.sh /update_check.sh
 WORKDIR /
 
 # Expose necessary ports
-EXPOSE 8080
 EXPOSE 28015
 EXPOSE 28016
 
