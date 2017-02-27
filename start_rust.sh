@@ -31,7 +31,7 @@ exit_handler()
 	fi
 
 	# Execute the RCON shutdown command
-	/usr/local/bin/shutdown_app
+	/usr/bin/shutdown_app
 	sleep 1
 
 	#kill -TERM "$child"

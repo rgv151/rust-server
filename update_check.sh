@@ -77,7 +77,7 @@ else
 
 	echo "Latest server build id ($NEW_BUILDID) is newer than the current one ($OLD_BUILDID), waiting for client update.."
 	echo $NEW_BUILDID > /steamcmd/rust/build.id
-	exec /user/local/bin/restart_app
+	exec /user/bin/restart_app
 	child=$!
 	wait "$child"
 fi

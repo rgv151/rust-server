@@ -21,9 +21,9 @@ for i in *.nim;do
     nim c -d:release $i
 done
 
-mv rcon /usr/local/bin
-mv restart /usr/local/bin/restart_app
-mv shutdown /usr/local/bin/shutdown_app
+mv rcon /usr/bin/
+mv restart /usr/bin/restart_app
+mv shutdown /usr/bin/shutdown_app
 
 apt remove -y --purge git && apt autoremove -y --purge
 
