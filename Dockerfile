@@ -38,15 +38,7 @@ VOLUME ["/steamcmd/rust"]
 
 # Add compile tools
 ADD bin /tmp/bin/
-RUN cd /tmp && wget https://nim-lang.org/download/nim-0.16.0.tar.xz && tar -xJf nim-* && cd nim-* && sh build.sh && ./bin/nim c koch && ./koch nimble && ./bin/nimble install websocket
-
-WORKDIR /tmp/bin
-RUN for i in *.nim;do /tmp/nim/bin/nim c -d:release $i;done && mv rcon /usr/local/ && mv restart /usr/local/bin/restart_app && mv shutdown /usr/local/bin/shutdown_app
-
-WORKDIR /
-
-# Cleanup
-RUN rm -rf /tmp/nim && rm -rf /root/.nimble && rm -rf /tmp/bin
+RUN chmod +x /tmp/bin/build.sh && /tmp/bin/build.sh
 
 # Add the steamcmd installation script
 ADD install.txt /install.txt
