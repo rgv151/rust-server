@@ -24,12 +24,13 @@ proc main() {.async.} =
     await runCommand("say NOTICE: We're updating the server in <color=orange>" & $i & " minutes</color>, so get to a safe spot!")
     await sleepAsync(60000)
 
-  await runCommand("restart 0")
+  await runCommand("quit")
   await ws.close()
 
   if fileExists("/tmp/restart_app.lock"):
     discard unlink("/tmp/restart_app.lock")
 
+  discard execShellCmd("kill -s 2 $(pidof bash)")
   quit()
 
 asyncCheck main()
