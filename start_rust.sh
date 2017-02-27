@@ -140,15 +140,6 @@ fi
 
 if [ ! -z ${RUST_RCON_WEB+x} ]; then
 	RUST_STARTUP_COMMAND="$RUST_STARTUP_COMMAND +rcon.web $RUST_RCON_WEB"
-	if [ "$RUST_RCON_WEB" = "1" ]; then
-		# Fix the webrcon (customizes a few elements)
-		bash /tmp/fix_conn.sh
-
-		# Start nginx (in the background)
-		echo "Starting web server.."
-		nginx && sleep 5
-		#nginx -g "daemon off;" && sleep 5 ## Used for debugging nginx
-	fi
 fi
 
 # Check if a special seed override file exists
