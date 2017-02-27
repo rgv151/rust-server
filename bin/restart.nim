@@ -19,14 +19,18 @@ proc runCommand(cmd: string) {.async.} =
   await ws.sock.sendText($cmd, true)
 
 
-for i in 5..1:
-  waitFor runCommand("say NOTICE: We're updating the server in <color=orange>" & $i & " minutes</color>, so get to a safe spot!")
-  waitFor sleepAsync(1000)
+proc main() {.async.} =
+  for i in countdown(5, 1):
+    await runCommand("say NOTICE: We're updating the server in <color=orange>" & $i & " minutes</color>, so get to a safe spot!")
+    await sleepAsync(60000)
 
-waitFor runCommand("quit")
-waitFor ws.close()
+  await runCommand("restart 0")
+  await ws.close()
 
-if fileExists("/tmp/restart_app.lock"):
-  discard unlink("/tmp/restart_app.lock")
+  if fileExists("/tmp/restart_app.lock"):
+    discard unlink("/tmp/restart_app.lock")
 
-discard execShellCmd("kill -s 2 $(pidof bash)")
+  quit()
+
+asyncCheck main()
+runForever()

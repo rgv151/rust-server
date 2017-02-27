@@ -13,7 +13,7 @@ nim c koch
 
 ./koch nimble
 
-nimble -y install websocket
+nimble -y install https://github.com/rgv151/websocket.nim.git
 
 
 cd /tmp/bin
