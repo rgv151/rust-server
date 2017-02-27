@@ -22,7 +22,6 @@ bin/nimcache
 Vagrantfile
 a.out
 autogen/
-bin
 build_src
 bundles/
 docker/docker
