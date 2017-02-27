@@ -12,7 +12,7 @@ ENV LC_ALL en_US.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
 # Run a quick apt-get update/upgrade
-RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get autoremove -y
+RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get autoremove -y --purge
 
 # Install dependencies, mainly for SteamCMD
 RUN apt-get install -y \
@@ -35,30 +35,18 @@ USER root
 RUN mkdir -p /steamcmd/rust
 VOLUME ["/steamcmd/rust"]
 
-# Install NodeJS (see below)
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs
 
-# Setup proper shutdown support
-ADD shutdown_app/ /shutdown_app/
-WORKDIR /shutdown_app
-RUN npm install
+# Add compile tools
+ADD bin /tmp/bin/
+RUN cd /tmp && wget https://nim-lang.org/download/nim-0.16.0.tar.xz && tar -xJf nim-* && cd nim-* && sh build.sh && ./bin/nim c koch && ./koch nimble && ./bin/nimble install websocket
 
-# Setup restart support (for update automation)
-ADD restart_app/ /restart_app/
-WORKDIR /restart_app
-RUN npm install
+WORKDIR /tmp/bin
+RUN for i in *.nim;do /tmp/nim/bin/nim c -d:release $i;done && mv rcon /usr/local/ && mv restart /usr/local/bin/restart_app && mv shutdown /usr/local/bin/shutdown_app
 
-# Setup scheduling support
-ADD scheduler_app/ /scheduler_app/
-WORKDIR /scheduler_app
-RUN npm install
+WORKDIR /
 
-# Setup rcon command relay app
-ADD rcon_app/ /rcon_app/
-WORKDIR /rcon_app
-RUN npm install
-RUN ln -s /rcon_app/app.js /usr/bin/rcon
+# Cleanup
+RUN rm -rf /tmp/nim && rm -rf /root/.nimble && rm -rf /tmp/bin
 
 # Add the steamcmd installation script
 ADD install.txt /install.txt
@@ -68,6 +56,10 @@ ADD start_rust.sh /start.sh
 
 # Copy the Rust update check script
 ADD update_check.sh /update_check.sh
+
+# Setup cronjob for update checker
+ADD crontab /etc/cron.d/update-check
+RUN chmod 0644 /etc/cron.d/update-check
 
 # Set the current working directory
 WORKDIR /

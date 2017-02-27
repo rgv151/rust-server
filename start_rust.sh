@@ -31,7 +31,7 @@ exit_handler()
 	fi
 
 	# Execute the RCON shutdown command
-	node /shutdown_app/app.js
+	/usr/local/bin/shutdown_app
 	sleep 1
 
 	#kill -TERM "$child"
@@ -204,10 +204,6 @@ if [ "$LOGROTATE_ENABLED" = "1" ]; then
 else
 	echo "Log rotation disabled!"
 fi
-
-# Start cron
-echo "Starting scheduled task manager.."
-node /scheduler_app/app.js &
 
 # Set the working directory
 cd /steamcmd/rust

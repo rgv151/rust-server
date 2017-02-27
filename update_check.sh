@@ -74,10 +74,10 @@ else
 	    printf "Failed to aquire lock.\n" >&2
 	    exit 1
 	fi
-	
+
 	echo "Latest server build id ($NEW_BUILDID) is newer than the current one ($OLD_BUILDID), waiting for client update.."
 	echo $NEW_BUILDID > /steamcmd/rust/build.id
-	exec node /restart_app/app.js
+	exec /user/local/bin/restart_app
 	child=$!
 	wait "$child"
 fi
