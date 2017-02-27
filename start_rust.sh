@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+ENV_FILE=/steamcmd/rust/rust.env
+
+if [ -f $ENV_FILE ]; then
+    source $ENV_FILE
+else
+    env | egrep "^RUST" > $ENV_FILE
+fi
+
 # Define the exit handler
 exit_handler()
 {
@@ -21,7 +29,7 @@ exit_handler()
 			cp -fr "/steamcmd/rust/server/$RUST_SERVER_IDENTITY/xp*.db" "/steamcmd/rust/bak/"
 		fi
 	fi
-	
+
 	# Execute the RCON shutdown command
 	node /shutdown_app/app.js
 	sleep 1
