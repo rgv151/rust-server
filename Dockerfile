@@ -50,8 +50,7 @@ ADD start_rust.sh /start.sh
 ADD update_check.sh /update_check.sh
 
 # Setup cronjob for update checker
-ADD crontab /etc/cron.d/update-check
-RUN chmod 0644 /etc/cron.d/update-check
+RUN echo "*/5 * * * * /update_check.sh /var/log/cron.log 2>&1" | crontab -
 
 # Set the current working directory
 WORKDIR /
