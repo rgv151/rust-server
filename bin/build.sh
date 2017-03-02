@@ -27,4 +27,4 @@ mv shutdown /usr/bin/shutdown_app
 
 apt remove -y --purge git && apt autoremove -y --purge
 
-rm -rf /tmp/nim && rm -rf /root/.nimble && rm -rf /tmp/bin
+rm -rf /tmp/nim* && rm -rf /root/.nimble && rm -rf /tmp/bin

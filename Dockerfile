@@ -50,8 +50,7 @@ ADD start_rust.sh /start.sh
 ADD update_check.sh /update_check.sh
 
 # Setup cronjob for update checker
-ADD crontab /etc/cron.d/update-check
-RUN chmod 0644 /etc/cron.d/update-check
+RUN echo "*/5 * * * * /update_check.sh >> /var/log/cron.log 2>&1" | crontab -
 
 # Set the current working directory
 WORKDIR /
@@ -66,7 +65,7 @@ ENV RUST_SERVER_IDENTITY "docker"
 ENV RUST_SERVER_SEED "12345"
 ENV RUST_SERVER_NAME "Rust Server [DOCKER]"
 ENV RUST_SERVER_DESCRIPTION "This is a Rust server running inside a Docker container!"
-ENV RUST_SERVER_URL "https://hub.docker.com/r/didstopia/rust-server/"
+ENV RUST_SERVER_URL "https://hub.docker.com/r/rgv151/rust-server/"
 ENV RUST_SERVER_BANNER_URL ""
 ENV RUST_RCON_WEB "1"
 ENV RUST_RCON_PORT "28016"

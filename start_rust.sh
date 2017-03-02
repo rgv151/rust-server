@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+/etc/init.d/cron start
+
 ENV_FILE=/steamcmd/rust/rust.env
 
 if [ -f $ENV_FILE ]; then
